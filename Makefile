@@ -10,7 +10,7 @@ OBJS            := $(addprefix $(DIR_OBJS)/, $(SRCS:%.c=%.o))
 
 CC              := clang
 OPT				:= -O3 -mavx2 -mfma -march=native -mtune=native -funroll-loops -fvectorize -ffp-contract=fast  -freciprocal-math -ffast-math -fstrict-aliasing  -fomit-frame-pointer -flto=full -mprefer-vector-width=256
-CFLAGS          := -Wall -Wextra -Werror #$(OPT)
+CFLAGS          := -Wall -Wextra -Werror -Wno-initializer-overrides -g#$(OPT)
 IFLAGS          := -I $(DIR_HEADERS)
 
 GREEN            = \033[0;32m
