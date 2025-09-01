@@ -6,7 +6,7 @@
 /*   By: wirare <wirare@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:02:23 by wirare            #+#    #+#             */
-/*   Updated: 2025/09/01 18:21:52 by wirare           ###   ########.fr       */
+/*   Updated: 2025/09/01 18:38:06 by ellanglo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #pragma once
@@ -15,22 +15,25 @@
 #include <syscall.h>
 
 #ifndef SYS_futex_waitv
-#define SYS_futex_waitv 449
-#endif
-#ifndef SYS_set_mempolicy_home_node
-#define SYS_set_mempolicy_home_node 450
-#endif
-#ifndef SYS_cachestat
-#define SYS_cachestat 451
+# define SYS_futex_waitv 449
 #endif
 
-#define PRINT_SAFE_PTR(format, cast)	\
-	printf("\nTEST:%llu\n", data);		\
-	if ((cast)data) {					\
-		printf(format, (cast)data);		\
-	}									\
-	else								\
-		printf("%p", (cast)data);		\
+#ifndef SYS_set_mempolicy_home_node
+# define SYS_set_mempolicy_home_node 450
+#endif
+
+#ifndef SYS_cachestat
+# define SYS_cachestat 451
+#endif
+
+#define PRINT_SAFE_PTR(format, cast)				\
+	printf("\n{RAW_DATA:%llu}\n", data);			\
+	if ((cast)data) {								\
+		printf("{CHAR[0]=%c}\n", ((cast)data)[0]);	\
+		printf(format, (cast)data);					\
+	}												\
+	else											\
+		printf("%p", (cast)data);					\
 
 typedef unsigned long long int u64;
 

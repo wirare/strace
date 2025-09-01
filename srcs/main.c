@@ -6,7 +6,7 @@
 /*   By: wirare <wirare@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 19:33:27 by wirare            #+#    #+#             */
-/*   Updated: 2025/08/31 22:07:13 by ellanglo         ###   ########.fr       */
+/*   Updated: 2025/09/01 19:24:08 by ellanglo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <sys/syscall.h>
@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <syscall.h>
 #include <ft_strace.h>
+#include <fcntl.h>
 
 int is_address(long long syscall_number)
 {
@@ -55,6 +56,12 @@ int main(int ac, char** av)
     }
 	else 
 	{
+		char proc_str[25];
+		sprintf(proc_str, "%s%d%s", "/proc/", pid, "/mem");
+		int fd = open(proc_str, O_RDONLY);
+		char reading[1024];
+		read(fd, reading, 1024);
+		printf("/proc/%d/mem first line : %s\n", pid, reading);
         int status;
         waitpid(pid, &status, 0);
 
