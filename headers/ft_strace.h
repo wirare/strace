@@ -6,11 +6,12 @@
 /*   By: wirare <wirare@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:02:23 by wirare            #+#    #+#             */
-/*   Updated: 2025/09/01 01:41:39 by wirare           ###   ########.fr       */
+/*   Updated: 2025/09/01 18:21:52 by wirare           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #pragma once
 #include <sys/syscall.h>
+#include <string.h>
 #include <syscall.h>
 
 #ifndef SYS_futex_waitv
@@ -22,6 +23,14 @@
 #ifndef SYS_cachestat
 #define SYS_cachestat 451
 #endif
+
+#define PRINT_SAFE_PTR(format, cast)	\
+	printf("\nTEST:%llu\n", data);		\
+	if ((cast)data) {					\
+		printf(format, (cast)data);		\
+	}									\
+	else								\
+		printf("%p", (cast)data);		\
 
 typedef unsigned long long int u64;
 

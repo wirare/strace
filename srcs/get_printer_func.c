@@ -6,11 +6,13 @@
 /*   By: ellanglo <ellanglo@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 19:10:13 by ellanglo          #+#    #+#             */
-/*   Updated: 2025/09/01 01:14:53 by wirare           ###   ########.fr       */
+/*   Updated: 2025/09/01 17:49:41 by wirare           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <ft_strace.h>
+#include <signal.h>
 #include <stdio.h>
+#include <struct_def.h>
 
 void print(t_syscall_arg_type type, u64 data)
 {
@@ -123,7 +125,7 @@ void print(t_syscall_arg_type type, u64 data)
 		DEFINE_PRINTER(SAT_UID_T_PTR)
 		DEFINE_PRINTER(SAT_VOID_PTR)
 		DEFINE_PRINTER(SAT_STRUCT_SIGINFO_PTR)
-DEFINE_PRINTER(SAT_UNSIGNED_LONG_PTR)
+		DEFINE_PRINTER(SAT_UNSIGNED_LONG_PTR)
 		DEFINE_PRINTER(SAT_STRUCT_USER_DESC_PTR)
 		DEFINE_PRINTER(SAT_NO_ARG)
 		DEFINE_PRINTER(SAT_CONST_STRUCT_TIMESPEC_PTR)
@@ -149,18 +151,32 @@ DECLARE_PRINTER(SAT_VA_ARGS)
 	printf("{...}");
 }
 
-DECLARE_PRINTER(SAT_STRUCT_KEXEC_SEGMENT_PTR){printf("NOT IMPLEMENTED");}
+#include <linux/kexec.h>
+DECLARE_PRINTER(SAT_STRUCT_KEXEC_SEGMENT_PTR)
+{
+	struct kexec_segment *seg = (struct kexec_segment *)data;
+	printf("{buf=%p, bufsz=%zu, mem=%p, memsz=%zu}", seg->buf, seg->bufsz, seg->mem, seg->memsz);
+}
 
 DECLARE_PRINTER(SAT_INT)
 {
 	printf("%d", (int)data);
 }
 
-DECLARE_PRINTER(SAT_STRUCT_SIGALTSTACK_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_STRUCT_SIGALTSTACK_PTR)
+{
+	sigaltstack_t *seg = (sigaltstack_t *)data;
+	printf("{ss_sp=%p, ss_flags=%d, ss_size=%zu}", seg->ss_sp, seg->ss_flags, seg->ss_size);
+}
 
 DECLARE_PRINTER(SAT_UNION_BPF_ATTR_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_STRUCT_USER_MSGHDR_PTR){printf("NOT IMPLEMENTED");}
+#include <sys/socket.h>
+DECLARE_PRINTER(SAT_STRUCT_USER_MSGHDR_PTR)
+{
+	//struct msghdr *seg = (struct msghdr *)data;
+	printf("NOT IMPLEMENTED");
+}
 
 DECLARE_PRINTER(SAT_CHAR_PTR)
 {
@@ -246,9 +262,15 @@ DECLARE_PRINTER(SAT_SIZE_T_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_STRUCT_GETCPU_CACHE_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_LONG){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_LONG)
+{
+	printf("%ld", (long)data);
+}
 
-DECLARE_PRINTER(SAT_U32_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_U32_PTR)
+{
+	printf("%p", (unsigned int*)data);
+}
 
 DECLARE_PRINTER(SAT_STRUCT_FILE_HANDLE_PTR){printf("NOT IMPLEMENTED");}
 
@@ -296,9 +318,15 @@ DECLARE_PRINTER(SAT_STRUCT_ITIMERVAL_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_CONST_STRUCT__KERNEL_TIMESPEC_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_UNSIGNED_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_UNSIGNED_PTR)
+{
+	printf("%p", (unsigned *)data);
+}
 
-DECLARE_PRINTER(SAT_CONST_CHAR_PTR_){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_CONST_CHAR_PTR_)
+{
+	PRINT_SAFE_PTR("%s", char *)
+}
 
 DECLARE_PRINTER(SAT_STRUCT_STATX_PTR){printf("NOT IMPLEMENTED");}
 
@@ -306,7 +334,10 @@ DECLARE_PRINTER(SAT_FD_SET_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_STRUCT_LINUX_DIRENT_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_CONST_INT_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_CONST_INT_PTR)
+{
+	printf("%d", (int)data);
+}
 
 DECLARE_PRINTER(SAT_UNSIGNED_LONG){printf("NOT IMPLEMENTED");}
 
@@ -318,13 +349,19 @@ DECLARE_PRINTER(SAT_STRUCT_STAT_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_GID_T_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_U64){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_U64)
+{
+	printf("%llu", (unsigned long long)data);
+}
 
 DECLARE_PRINTER(SAT_SIGINFO_T_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_STRUCT_TMS_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_U32){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_U32)
+{
+	printf("%lu", (unsigned long)data);
+}
 
 DECLARE_PRINTER(SAT_STRUCT_SEMBUF_PTR){printf("NOT IMPLEMENTED");}
 
@@ -348,7 +385,10 @@ DECLARE_PRINTER(SAT_STRUCT_MSGBUF_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_STRUCT_POLLFD_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_CONST_CHAR_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_CONST_CHAR_PTR)
+{
+	PRINT_SAFE_PTR("%s", char *)
+}
 
 DECLARE_PRINTER(SAT_PID_T){printf("NOT IMPLEMENTED");}
 
@@ -358,7 +398,7 @@ DECLARE_PRINTER(SAT_RWF_T){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_UNSIGNED_CHAR_PTR_)
 {
-	printf("%s", (unsigned char *)data);
+	PRINT_SAFE_PTR("%s", unsigned char *)
 }
 
 DECLARE_PRINTER(SAT_STRUCT_SCHED_ATTR_PTR){printf("NOT IMPLEMENTED");}
