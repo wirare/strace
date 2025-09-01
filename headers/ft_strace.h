@@ -6,16 +6,22 @@
 /*   By: wirare <wirare@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:02:23 by wirare            #+#    #+#             */
-/*   Updated: 2025/08/31 22:02:07 by ellanglo         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:41:39 by wirare           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #pragma once
 #include <sys/syscall.h>
 #include <syscall.h>
 
+#ifndef SYS_futex_waitv
 #define SYS_futex_waitv 449
+#endif
+#ifndef SYS_set_mempolicy_home_node
 #define SYS_set_mempolicy_home_node 450
+#endif
+#ifndef SYS_cachestat
 #define SYS_cachestat 451
+#endif
 
 typedef unsigned long long int u64;
 

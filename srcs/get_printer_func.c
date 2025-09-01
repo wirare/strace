@@ -6,7 +6,7 @@
 /*   By: ellanglo <ellanglo@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 19:10:13 by ellanglo          #+#    #+#             */
-/*   Updated: 2025/08/31 22:06:49 by ellanglo         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:14:53 by wirare           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <ft_strace.h>
@@ -162,7 +162,10 @@ DECLARE_PRINTER(SAT_UNION_BPF_ATTR_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_STRUCT_USER_MSGHDR_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_CHAR_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_CHAR_PTR)
+{
+	printf("%p", (char *)data);
+}
 
 DECLARE_PRINTER(SAT_STRUCT__KERNEL_ITIMERSPEC_PTR){printf("NOT IMPLEMENTED");}
 
@@ -174,7 +177,10 @@ DECLARE_PRINTER(SAT_STRUCT_IOCB_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_MQD_T){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_SIZE_T){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_SIZE_T)
+{
+	printf("%lu", (size_t)data);
+}
 
 DECLARE_PRINTER(SAT_OFF_T){printf("NOT IMPLEMENTED");}
 
@@ -350,11 +356,17 @@ DECLARE_PRINTER(SAT_STRUCT_MMSGHDR_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_RWF_T){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_UNSIGNED_CHAR_PTR_){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_UNSIGNED_CHAR_PTR_)
+{
+	printf("%s", (unsigned char *)data);
+}
 
 DECLARE_PRINTER(SAT_STRUCT_SCHED_ATTR_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_CONST_UNSIGNED_LONG_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_CONST_UNSIGNED_LONG_PTR)
+{
+	printf("%p", (unsigned long *)data);
+}
 
 DECLARE_PRINTER(SAT_CONST_STRUCT_SIGACTION_PTR){printf("NOT IMPLEMENTED");}
 
@@ -366,15 +378,24 @@ DECLARE_PRINTER(SAT_STRUCT_ROBUST_LIST_HEAD_PTR_PTR){printf("NOT IMPLEMENTED");}
 
 DECLARE_PRINTER(SAT_UID_T_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_VOID_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_VOID_PTR)
+{
+	printf("%p", (void *)data);
+}
 
 DECLARE_PRINTER(SAT_STRUCT_SIGINFO_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_UNSIGNED_LONG_PTR){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_UNSIGNED_LONG_PTR)
+{
+	printf("%p", (unsigned long*)data);
+}
 
 DECLARE_PRINTER(SAT_STRUCT_USER_DESC_PTR){printf("NOT IMPLEMENTED");}
 
-DECLARE_PRINTER(SAT_NO_ARG){printf("NOT IMPLEMENTED");}
+DECLARE_PRINTER(SAT_NO_ARG)
+{
+	printf("");
+}
 
 DECLARE_PRINTER(SAT_CONST_STRUCT_TIMESPEC_PTR){printf("NOT IMPLEMENTED");}
 
